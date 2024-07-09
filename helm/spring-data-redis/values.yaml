@@ -34,3 +34,9 @@ ingress:
     - host: chart-example.local
       paths: []
   tls: []
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
