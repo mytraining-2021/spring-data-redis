@@ -1,19 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "helloworld.fullname" . }}
+  name: {{ include "spring-data-redis.fullname" . }}
   labels:
-    {{- include "helloworld.labels" . | nindent 4 }}
+    {{- include "spring-data-redis.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "helloworld.selectorLabels" . | nindent 6 }}
+      {{- include "spring-data-redis.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "helloworld.selectorLabels" . | nindent 8 }}
+        {{- include "spring-data-redis.selectorLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ .Values.serviceAccount.name | default .Release.Name }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
