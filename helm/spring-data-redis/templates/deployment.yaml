@@ -1,23 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "spring-data-redis.fullname" . }}
+  name: spring-data-redis
   labels:
-    app: {{ include "spring-data-redis.name" . }}
+    app: spring-data-redis
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      app: {{ include "spring-data-redis.name" . }}
+      app: spring-data-redis
   template:
     metadata:
       labels:
-        app: {{ include "spring-data-redis.name" . }}
+        app: spring-data-redis
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: spring-data-redis
+          image: myacr002.azurecr.io/spring-data-redis:latest
           ports:
             - containerPort: 8080
           env:
@@ -33,6 +32,8 @@ spec:
               value: "DEV.redis.cache.windows.net"
             - name: SPRING_REDIS_PORT
               value: "6379"
+            - name: SPRING_REDIS_PASSWORD
+              value: "ZRRxdHHEiPzpTTYMNBgU9GFARh8YeBYkeAzCaIPifFs="
           resources:
             limits:
               cpu: "500m"
