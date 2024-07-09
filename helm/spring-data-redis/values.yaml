@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: myacr002.azurecr.io/helloworld
+  repository: myacr002.azurecr.io/spring-data-redis
   tag: latest
   pullPolicy: Always
 
@@ -28,3 +28,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+serviceAccount:
+  create: true
+  name: ""
