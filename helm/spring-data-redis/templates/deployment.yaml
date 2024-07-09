@@ -1,25 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "spring-data-redis.fullname" . }}
+  name: spring-data-redis
   labels:
-    {{- include "spring-data-redis.labels" . | nindent 4 }}
+    app: spring-data-redis
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "spring-data-redis.selectorLabels" . | nindent 6 }}
+      app: spring-data-redis
   template:
     metadata:
       labels:
-        {{- include "spring-data-redis.selectorLabels" . | nindent 8 }}
+        app: spring-data-redis
     spec:
-      serviceAccountName: {{ .Values.serviceAccount.name | default .Release.Name }}
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: spring-data-redis
+          image: myacr002.azurecr.io/spring-data-redis:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:h2:mem:testdb"
+            - name: SPRING_DATASOURCE_DRIVERCLASSNAME
+              value: "org.h2.Driver"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "sa"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "password"
+            - name: SPRING_REDIS_HOST
+              value: "DEV.redis.cache.windows.net"
+            - name: SPRING_REDIS_PORT
+              value: "6379"
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
